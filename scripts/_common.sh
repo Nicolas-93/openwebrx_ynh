@@ -5,16 +5,16 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="deb1 deb2 php$YNH_DEFAULT_PHP_VERSION-deb1 php$YNH_DEFAULT_PHP_VERSION-deb2"
+repo_url="https://repo.openwebrx.de/debian"
+repo_key="https://repo.openwebrx.de/debian/key.gpg.txt"
 
-#=================================================
-# PERSONAL HELPERS
-#=================================================
+pkg_dependencies="python3 python3-pkg-resources \
+soapysdr-tools \
+wsjtx \
+debconf"
 
-#=================================================
-# EXPERIMENTAL HELPERS
-#=================================================
-
-#=================================================
-# FUTURE OFFICIAL HELPERS
-#=================================================
+extra_pkg_dependencies="csdr \
+netcat \
+owrx-connector hpsdrconnector \
+python3-js8py python3-csdr python3-digiham direwolf \
+js8call runds-connector aprs-symbols m17-demod nmux codecserver"

@@ -1,7 +1,6 @@
-SOURCE_URL=url of app's source
-SOURCE_SUM=sha256 checksum
+SOURCE_URL=https://github.com/jketterl/openwebrx/archive/refs/tags/1.2.0.tar.gz
+SOURCE_SUM=77a9573a22f6c65277ec0aeb4599aa6aee3a7873e3f651e7438f41baa12c38b3
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=
 SOURCE_EXTRACT=true
