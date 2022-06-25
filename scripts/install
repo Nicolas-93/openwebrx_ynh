@@ -199,6 +199,11 @@ fi
 
 # Only the admin can access the admin panel of the app (if the app has an admin panel)
 ynh_permission_create --permission="admin" --url="/settings" --allowed=$admin
+ynh_permission_create --permission="api" --url="/api" --allowed=$admin --show_tile="false"
+ynh_permission_create --permission="api" --url="/metrics" --allowed=$admin --show_tile="false"
+ynh_permission_create --permission="api" --url="/metrics.json" --allowed=$admin --show_tile="false"
+ynh_permission_create --permission="api" --url="/status.json" --allowed=$admin --show_tile="false"
+
 
 #=================================================
 # RELOAD NGINX
