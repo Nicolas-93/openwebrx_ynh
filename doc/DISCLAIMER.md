@@ -1,12 +1,6 @@
-* Any known limitations, constrains or stuff not working, such as (but not limited to):
-    * requiring a full dedicated domain ?
-    * architectures not supported ?
-    * not-working single-sign on or LDAP integration ?
-    * the app requires an important amount of RAM / disk / .. to install or to work properly
-    * etc...
-
-* Other infos that people should be aware of, such as:
-    * any specific step to perform after installing (such as manually finishing the install, specific admin credentials, ...)
-    * how to configure / administrate the application if it ain't obvious
-    * upgrade process / specificities / things to be aware of ?
-    * security considerations ?
+* Some SDR specific dependencies may need manual installation, please see the "Feature report" page available under OpenWebRX's settings.
+* Those dependencies are currently not build with this package, you can still follow the wiki, to compile and install them :
+    * FreeDV
+    * wsjtx 2.4 (2.3 is installed)
+    * codecserver_ambe
+* The compilation of the DRM demodulator (Digital Radio Mondial) provided by DREAM is offered during installation
