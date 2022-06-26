@@ -42,6 +42,14 @@
             {
                 "name": "password",
                 "type": "password"
+            },
+            {
+                "name": "install_dream",
+                "type": "boolean",
+                "ask": {
+                    "en": "Compile and install DREAM to support Digital Radio Mondial decoding in OpenWebRX"
+                },
+                "default": false
             }
         ]
     }

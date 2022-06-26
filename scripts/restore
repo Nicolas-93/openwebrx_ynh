@@ -31,6 +31,7 @@ domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 datadir=$(ynh_app_setting_get --app=$app --key=datadir)
+dream_installed=$(ynh_app_setting_get --app=$app --key=dream_installed)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
@@ -82,9 +83,12 @@ chown -R $app:www-data "$datadir"
 ynh_script_progression --message="Reinstalling dependencies..." --time --weight=40
 
 ynh_install_app_dependencies $pkg_dependencies
-ynh_install_extra_app_dependencies --repo="https://repo.openwebrx.de/debian/ $(ynh_get_debian_release) main" \
-                                   --key="https://repo.openwebrx.de/debian/key.gpg.txt" \
+ynh_install_extra_app_dependencies --repo="deb $repo_url $(ynh_get_debian_release) main" \
+                                   --key="$repo_key" \
                                    --package="$extra_pkg_dependencies"
+if [ $dream_installed -eq 1 ]; then
+    install_dream
+fi
 
 #=================================================
 # RESTORE THE NGINX CONFIGURATION

@@ -1,0 +1,6 @@
+SOURCE_URL=https://downloads.sourceforge.net/project/drm/dream/2.1.1/dream-2.1.1-svn808.tar.gz
+SOURCE_SUM=417734a197ed596a08e75363c304be9b4595f2f21581bc64fec47c49f733bb05
+SOURCE_SUM_PRG=sha256sum
+SOURCE_FORMAT=tar.gz
+SOURCE_IN_SUBDIR=true
+SOURCE_EXTRACT=true
