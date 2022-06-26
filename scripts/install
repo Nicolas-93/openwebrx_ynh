@@ -129,14 +129,18 @@ chown -R $app:www-data "$datadir"
 #=================================================
 ynh_script_progression --message="Adding a configuration file..." --time --weight=1
 
-mkdir /etc/$app
-ynh_add_config --template="../conf/$app.conf" --destination="/etc/$app/$app.conf"
+# Create configuration directories
+mkdir -p /etc/$app/$app.conf.d
+
+# Default config
+mv $final_path/$app.conf /etc/$app
+
+# Override configs
+ynh_add_config --template="../conf/$app.conf" --destination="/etc/$app/$app.conf.d/ynh.conf"
 
 cp $final_path/bands.json /etc/$app
 ynh_store_file_checksum --file="/etc/$app/bands.json"
 
-# You may need to use chmod 600 instead of 400,
-# for example if the app is expected to be able to modify its own config
 chmod -R 500 "/etc/$app"
 chmod -R o-rwx "$datadir"
 chown -R $app:www-data "/etc/$app"
@@ -146,6 +150,8 @@ chown -R $app:www-data "/etc/$app"
 #=================================================
 # Create admin user for OpenWebRX
 #=================================================
+ynh_script_progression --message="Creating OpenWebRX's admin user" --time --weight=1
+
 openwebrx=$final_path/openwebrx.py
 if test -f "$datadir/users.json" ; then
     ynh_print_warn --message="User database already exists, checking if user $admin already exists..."    
