@@ -77,7 +77,6 @@ ynh_install_extra_app_dependencies --repo="deb $repo_url $(ynh_get_debian_releas
                                    --package="$extra_pkg_dependencies"
 
 # Compile and install DREAM if asked
-ynh_script_progression --message="Installing DREAM" --time --weight=20
 if [ $dream_asked -eq 1 ]; then
     install_dream
 fi
@@ -122,7 +121,7 @@ ynh_app_setting_set --app=$app --key=datadir --value=$datadir
 mkdir -p $datadir
 chmod 750 "$datadir"
 chmod -R o-rwx "$datadir"
-chown -R $app:www-data "$datadir"
+chown -R $app: "$datadir"
 
 #=================================================
 # ADD A CONFIGURATION
@@ -142,8 +141,8 @@ cp $final_path/bands.json /etc/$app
 ynh_store_file_checksum --file="/etc/$app/bands.json"
 
 chmod -R 500 "/etc/$app"
-chmod -R o-rwx "$datadir"
-chown -R $app:www-data "/etc/$app"
+chmod -R o-rwx "/etc/$app"
+chown -R $app: "/etc/$app"
 
 #=================================================
 # SPECIFIC SETUP
@@ -179,7 +178,7 @@ ynh_add_systemd_config
 #=================================================
 ynh_script_progression --message="Configuring log rotation..." --time --weight=1
 
-# Use logrotate to manage application logfile(s)
+mkdir -p "/var/log/$app"
 ynh_use_logrotate --logfile="/var/log/$app/$app.log"
 
 #=================================================

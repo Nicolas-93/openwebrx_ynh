@@ -36,7 +36,7 @@ function install_dream {
     ynh_setup_source --source_id=dream \
                      --dest_dir=/usr/local/src/dream
 
-    ynh_print_info --message="Compiling DREAM..."
+    ynh_print_info --message="Compiling and installing DREAM..."
     pushd /usr/local/src/dream
         ynh_exec_warn_less qmake CONFIG+="console warn_off"
         ynh_exec_warn_less make -j $(expr $(nproc) / 3 + 1) && make install
