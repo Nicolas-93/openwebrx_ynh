@@ -24,7 +24,7 @@ ynh_abort_if_errors
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..." --time --weight=1
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
 app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
@@ -36,7 +36,7 @@ dream_installed=$(ynh_app_setting_get --app=$app --key=dream_installed)
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
 #=================================================
-ynh_script_progression --message="Validating restoration parameters..." --time --weight=1
+ynh_script_progression --message="Validating restoration parameters..." --weight=1
 
 test ! -d $final_path \
 	|| ynh_die --message="There is already a directory: $final_path "
@@ -46,7 +46,7 @@ test ! -d $final_path \
 #=================================================
 # RECREATE THE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Recreating the dedicated system user..." --time --weight=1
+ynh_script_progression --message="Recreating the dedicated system user..." --weight=1
 
 # Create the dedicated user (if not existing)
 ynh_system_user_create --username=$app \
@@ -56,7 +56,7 @@ ynh_system_user_create --username=$app \
 #=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
-ynh_script_progression --message="Restoring the app main directory..." --time --weight=5
+ynh_script_progression --message="Restoring the app main directory..." --weight=5
 
 ynh_restore_file --origin_path="$final_path"
 
@@ -67,22 +67,23 @@ chown -R $app: "$final_path"
 #=================================================
 # RESTORE THE DATA DIRECTORY
 #=================================================
-ynh_script_progression --message="Restoring the data directory..." --time --weight=1
+ynh_script_progression --message="Restoring the data directory..." --weight=1
 
 ynh_restore_file --origin_path="$datadir" --not_mandatory
 
 mkdir -p "$datadir"
 
-chmod 750 "$datadir"
+chmod 700 "$datadir"
 chmod -R o-rwx "$datadir"
 chown -R $app: "$datadir"
+chmod 0600 "$datadir/users.json"
 
 #=================================================
 # SPECIFIC RESTORATION
 #=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Reinstalling dependencies..." --time --weight=40
+ynh_script_progression --message="Reinstalling dependencies..." --weight=25
 
 ynh_install_app_dependencies $pkg_dependencies
 ynh_install_extra_app_dependencies --repo="deb $repo_url $(ynh_get_debian_release) main" \
@@ -95,14 +96,14 @@ fi
 #=================================================
 # RESTORE THE NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Restoring the NGINX web server configuration..." --time --weight=1
+ynh_script_progression --message="Restoring the NGINX web server configuration..." --weight=1
 
 ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
 #=================================================
 # RESTORE CONFIG FILES
 #=================================================
-ynh_script_progression --message="Restoring configurations..." --time --weight=1
+ynh_script_progression --message="Restoring configurations..." --weight=1
 
 ynh_restore_file --origin_path="/etc/$app/"
 chmod -R 500 "/etc/$app/"
@@ -112,7 +113,7 @@ chown -R $app: "/etc/$app/"
 #=================================================
 # RESTORE SYSTEMD
 #=================================================
-ynh_script_progression --message="Restoring the systemd configuration..." --time --weight=1
+ynh_script_progression --message="Restoring the systemd configuration..." --weight=1
 
 ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
@@ -120,14 +121,14 @@ systemctl enable $app.service --quiet
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --time --weight=1
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
 yunohost service add $app --description="SDR receiver" --log="/var/log/$app/$app.log"
 
 #=================================================
 # RESTORE THE LOGROTATE CONFIGURATION
 #=================================================
-ynh_script_progression --message="Restoring the logrotate configuration..." --time --weight=1
+ynh_script_progression --message="Restoring the logrotate configuration..." --weight=1
 
 mkdir -p "/var/log/$app"
 ynh_restore_file --origin_path="/etc/logrotate.d/$app"
@@ -135,7 +136,7 @@ ynh_restore_file --origin_path="/etc/logrotate.d/$app"
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --time --weight=1
+ynh_script_progression --message="Starting a systemd service..." --weight=5
 
 ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"
 
@@ -144,11 +145,12 @@ ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$ap
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading NGINX web server" --time --weight=1
+ynh_script_progression --message="Reloading NGINX web server" --weight=1
 
 ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # END OF SCRIPT
 #=================================================
-ynh_script_progression --message="Restoration completed for $app" --time --last
+ynh_script_progression --message="Restoration completed for $app" --last
+

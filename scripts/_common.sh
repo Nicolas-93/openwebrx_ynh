@@ -45,7 +45,9 @@ function install_dream {
 }
 
 function remove_dream {
-    cd /usr/local/src/dream
-    ynh_exec_fully_quiet make uninstall
-    cd .. && rm -r dream/
+    pushd /usr/local/src/dream
+    	ynh_exec_fully_quiet make uninstall
+    	cd ..
+    	ynh_secure_remove dream/
+    popd
 }

@@ -35,7 +35,7 @@ app=$YNH_APP_INSTANCE_NAME
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
-ynh_script_progression --message="Validating installation parameters..." --time --weight=1
+ynh_script_progression --message="Validating installation parameters..." --weight=1
 
 final_path=/opt/yunohost/$app
 test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
@@ -48,7 +48,7 @@ ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
-ynh_script_progression --message="Storing installation settings..." --time --weight=1
+ynh_script_progression --message="Storing installation settings..." --weight=1
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
@@ -60,7 +60,7 @@ ynh_app_setting_set --app=$app --key=dream_installed --value=$dream_asked
 #=================================================
 # FIND AND OPEN A PORT
 #=================================================
-ynh_script_progression --message="Finding an available port..." --time --weight=1
+ynh_script_progression --message="Finding an available port..." --weight=1
 
 port=$(ynh_find_port --port=8095)
 ynh_app_setting_set --app=$app --key=port --value=$port
@@ -69,7 +69,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --time --weight=40
+ynh_script_progression --message="Installing dependencies..." --weight=25
 
 ynh_install_app_dependencies $pkg_dependencies
 ynh_install_extra_app_dependencies --repo="deb $repo_url $(ynh_get_debian_release) main" \
@@ -84,7 +84,7 @@ fi
 #==================================================
 # CREATE DEDICATED USER AND ADD IT TO PLUGDEV GROUP
 #==================================================
-ynh_script_progression --message="Configuring system user..." --time --weight=1
+ynh_script_progression --message="Configuring system user..." --weight=1
 
 # Create a system user
 ynh_system_user_create --username=$app \
@@ -94,7 +94,7 @@ ynh_system_user_create --username=$app \
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Setting up source files..." --time --weight=5
+ynh_script_progression --message="Setting up source files..." --weight=5
 
 ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 ynh_setup_source --dest_dir="$final_path"
@@ -106,7 +106,7 @@ chown -R $app: "$final_path"
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring NGINX web server..." --time --weight=1
+ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
@@ -114,19 +114,21 @@ ynh_add_nginx_config
 #=================================================
 # CREATE DATA DIRECTORY
 #=================================================
-ynh_script_progression --message="Creating a data directory..." --time --weight=1
+ynh_script_progression --message="Creating a data directory..." --weight=1
 
 ynh_app_setting_set --app=$app --key=datadir --value=$datadir
 
-mkdir -p $datadir
-chmod 750 "$datadir"
+mkdir -p "$datadir"
+
+chmod 700 "$datadir"
 chmod -R o-rwx "$datadir"
 chown -R $app: "$datadir"
+chmod 0600 "$datadir/users.json"
 
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding a configuration file..." --time --weight=1
+ynh_script_progression --message="Adding a configuration file..." --weight=1
 
 # Create configuration directories
 mkdir -p /etc/$app/$app.conf.d
@@ -149,7 +151,7 @@ chown -R $app: "/etc/$app"
 #=================================================
 # Create admin user for OpenWebRX
 #=================================================
-ynh_script_progression --message="Creating OpenWebRX's admin user" --time --weight=1
+ynh_script_progression --message="Creating OpenWebRX's admin user" --weight=5
 
 openwebrx=$final_path/openwebrx.py
 if test -f "$datadir/users.json" ; then
@@ -167,7 +169,7 @@ OWRX_PASSWORD=$password python $openwebrx admin --noninteractive adduser $admin
 #=================================================
 # SETUP SYSTEMD
 #=================================================
-ynh_script_progression --message="Configuring a systemd service..." --time --weight=1
+ynh_script_progression --message="Configuring a systemd service..." --weight=1
 
 ynh_add_systemd_config
 
@@ -176,7 +178,7 @@ ynh_add_systemd_config
 #=================================================
 # SETUP LOGROTATE
 #=================================================
-ynh_script_progression --message="Configuring log rotation..." --time --weight=1
+ynh_script_progression --message="Configuring log rotation..." --weight=1
 
 mkdir -p "/var/log/$app"
 ynh_use_logrotate --logfile="/var/log/$app/$app.log"
@@ -184,21 +186,21 @@ ynh_use_logrotate --logfile="/var/log/$app/$app.log"
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --time --weight=1
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
 yunohost service add $app --description="SDR receiver" --log="/var/log/$app/$app.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --time --weight=1
+ynh_script_progression --message="Starting a systemd service..." --weight=5
 
 ynh_systemd_action --service_name=$app --action="start" --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # SETUP SSOWAT
 #=================================================
-ynh_script_progression --message="Configuring permissions..." --time --weight=1
+ynh_script_progression --message="Configuring permissions..." --weight=1
 
 # Make app public if necessary
 if [ $is_public -eq 1 ]
@@ -220,7 +222,7 @@ ynh_permission_create --permission="api" \
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading NGINX web server..." --time --weight=1
+ynh_script_progression --message="Reloading NGINX web server..." --weight=1
 
 ynh_systemd_action --service_name=nginx --action=reload
 
@@ -229,5 +231,5 @@ ynh_systemd_action --service_name=nginx --action=reload
 #=================================================
 
 ynh_script_progression --message="Installation of $app completed" \
-                       --time \
                        --last
+

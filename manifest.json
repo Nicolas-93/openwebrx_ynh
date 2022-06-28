@@ -14,9 +14,17 @@
         "code": "https://github.com/jketterl/openwebrx"
     },
     "license": "AGPL-3.0",
+    "maintainer": {
+        "name": "",
+        "email": ""
+    },
     "requirements": {
         "yunohost": ">= 11.0.0"
     },
+    "services": [
+        "nginx",
+        "openwebrx"
+    ],
     "multi_instance": false,
     "arguments": {
         "install": [
@@ -27,7 +35,11 @@
             {
                 "name": "is_public",
                 "type": "boolean",
-                "default": true
+                "default": true,
+                "help": {
+                    "en": "If enabled, OpenWebRX will be accessible by users without a Yunohost account",
+                    "fr": "Si activé, OpenWebRX sera accessible par les utilisateurs sans compte Yunouhost"
+                }
             },
             {
                 "name": "path",
@@ -47,7 +59,8 @@
                 "name": "install_dream",
                 "type": "boolean",
                 "ask": {
-                    "en": "Compile and install DREAM to support Digital Radio Mondial decoding in OpenWebRX"
+                    "en": "Build and install DREAM to support Digital Radio Mondial decoding in OpenWebRX",
+                    "fr": "Compiler et installer DREAM pour supporter le décodage des diffusions DRM (Digital Radio Mondial) depuis OpenWebRX"
                 },
                 "default": false
             }
