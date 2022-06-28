@@ -123,7 +123,6 @@ mkdir -p "$datadir"
 chmod 700 "$datadir"
 chmod -R o-rwx "$datadir"
 chown -R $app: "$datadir"
-chmod 0600 "$datadir/users.json"
 
 #=================================================
 # ADD A CONFIGURATION
@@ -165,6 +164,7 @@ if test -f "$datadir/users.json" ; then
 fi
 
 OWRX_PASSWORD=$password python $openwebrx admin --noninteractive adduser $admin
+chmod 0600 "$datadir/users.json"
 
 #=================================================
 # SETUP SYSTEMD

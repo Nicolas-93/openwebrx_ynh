@@ -12,7 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..." --time --weight=1
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
 app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
@@ -96,9 +96,9 @@ ynh_add_nginx_config
 # UPDATE A CONFIG FILE
 #=================================================
 ynh_script_progression --message="Updating default configuration file..." --weight=1
+
 mv $final_path/$app.conf /etc/$app
 
-# ynh_add_config --template="../conf/$app.conf" --destination="$final_path/etc/$app/$app.conf"
 ynh_store_file_checksum --file="/etc/$app/bands.json"
 
 chmod -R 500 "/etc/$app"
