@@ -24,11 +24,11 @@ Online multi-user SDR receiver
 ## Disclaimers / important information
 
 * Some SDR specific dependencies may need manual installation, please see the "Feature report" page available under OpenWebRX's settings.
-* Those dependencies are currently not build with this package, you can still follow the wiki, to compile and install them :
+* Those optional dependencies are not currently built with this package, but you can still follow OpenWebRX's wiki, to manually compile and install them :
     * FreeDV
-    * wsjtx 2.4 (2.3 is installed)
+    * wsjtx 2.4 (version 2.3 is installed from Debian's repository)
     * codecserver_ambe
-* The compilation of the DRM demodulator (Digital Radio Mondial) provided by DREAM is offered during installation
+* The DRM (Digital Radio Mondial) demodulator provided by Dream is proposed to build during installation
 
 ## Documentation and resources
 
@@ -36,5 +36,6 @@ Online multi-user SDR receiver
 * Official user documentation: <https://github.com/jketterl/openwebrx/wiki>
 * Upstream app code repository: <https://github.com/jketterl/openwebrx>
 
+## Developer info
 
 **More info regarding app packaging:** <https://yunohost.org/packaging_apps>
