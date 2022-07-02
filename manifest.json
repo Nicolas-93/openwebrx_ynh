@@ -63,7 +63,17 @@
                     "fr": "Compiler et installer DREAM pour supporter le décodage des diffusions DRM (Digital Radio Mondial) depuis OpenWebRX"
                 },
                 "default": false
+            },
+            {
+                "name": "install_freedv",
+                "type": "boolean",
+                "ask": {
+                    "en": "Build and install codec2 with freedv_rx to support FreeDV demodulation in OpenWebRX",
+                    "fr": "Compiler et installer codec2 avec freedv_rx pour supporter la démodulation des diffusions FreeDV depuis OpenWebRX"
+                },
+                "default": false
             }
+
         ]
     }
 }

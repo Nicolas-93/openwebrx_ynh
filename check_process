@@ -2,6 +2,7 @@
 	; Manifest
 		password="1Strong-Password"
 		install_dream=1
+        install_freedv=1
 	; Checks
 		pkg_linter=1
 		setup_root=1

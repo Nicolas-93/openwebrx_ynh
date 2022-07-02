@@ -1,0 +1,6 @@
+SOURCE_URL=https://github.com/drowe67/codec2/archive/refs/tags/v1.0.3.tar.gz
+SOURCE_SUM=48162d562ea3bf4ca273f3c45df04505a006bd9a2b376006c75706c4de957da7
+SOURCE_SUM_PRG=sha256sum
+SOURCE_FORMAT=tar.gz
+SOURCE_IN_SUBDIR=true
+SOURCE_EXTRACT=true
